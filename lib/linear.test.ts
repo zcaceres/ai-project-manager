@@ -25,9 +25,7 @@ describe("Linear module", async () => {
     };
 
     const createdTicket = await Linear.createTicket(ticketInput);
-    console.log("created");
     const issue = await createdTicket.issue;
-    console.log("issue");
 
     expect(issue).toBeDefined();
     expect(issue!.title).toBe("Test Ticket");
@@ -54,5 +52,28 @@ describe("Linear module", async () => {
     expect(projects).toBeDefined();
     expect(projects.length).toBeGreaterThan(0);
     expect(projects[0].name).toBe("AI Agent Test Project");
+  });
+
+  it("creates a document", async () => {
+    const projects = Linear.getProjects();
+    const documentInput = {
+      title: "Test Document",
+      content: "This is a test document",
+      projectId: projects[0].id,
+    };
+
+    const documentCreatedEvent = await Linear.createDocument(documentInput);
+    expect(documentCreatedEvent).toBeDefined();
+    expect(documentCreatedEvent.success).toEqual(true);
+    expect(documentCreatedEvent.document!.title).toBe("Test Document");
+    expect(documentCreatedEvent.document!.content).toBe(
+      "This is a test document",
+    );
+  });
+
+  it("gets all documents", async () => {
+    const documents = Linear.getDocuments();
+    expect(documents).toBeDefined();
+    expect(documents.length).toBeGreaterThan(0);
   });
 });

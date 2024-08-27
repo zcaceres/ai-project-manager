@@ -5,6 +5,7 @@ export type CreateTicketInput = {
   stateId?: string;
   dueDate?: string;
   priority?: number;
+  projectId?: string;
 };
 
 export type UpdateTicketInput = {
@@ -12,8 +13,12 @@ export type UpdateTicketInput = {
 } & Partial<CreateTicketInput>;
 
 // Sub-type of `DocumentCreateInput`
-export type PRDInput = {
+export type DocumentInput = {
   title: string;
   content: string;
   projectId: string;
 };
+
+export type UpdateDocumentInput = {
+  documentId: string;
+} & Partial<DocumentInput>;

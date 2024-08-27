@@ -1,4 +1,4 @@
-import { EasyAgentCLI, Agent, Tool } from "easy-agent";
+import { EasyAgentCLI } from "easy-agent";
 import ProjectManager from "./lib/project-manager";
 
 // Take in the request to make a ticket (prompt)

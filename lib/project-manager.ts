@@ -1,11 +1,13 @@
 import { Agent } from "easy-agent";
 import {
   CreateIssue,
-  CreatePRD,
+  CreateDocument,
   GetIssues,
   GetProjects,
   GetWorkflowStates,
   UpdateIssue,
+  UpdateDocument,
+  GetDocuments,
 } from "./tools";
 
 const PM_AGENT_PROMPT = `You are an exceptional AI Project Manager, leveraging Linear.app to orchestrate complex software development projects with unparalleled efficiency.
@@ -22,7 +24,10 @@ const PM_AGENT_PROMPT = `You are an exceptional AI Project Manager, leveraging L
     - You have a tool called 'get_all_issues' available to you. You can use this tool to fetch all issues from Linear.
     - You have a tool called 'update_issue' available to you. You can use this tool to update a Linear issue by id. You will need to identify the right ID before using this, so you can pass it in to this tool.
     - You have a tool called 'get_workflow_states' available to you. You can use this see all the possible statuses for issue in Linear. Use this to get the stateId for the issues you want to update.
-    - You have a tool called 'get_projects' available to you. You can use this to see all the projects in Linear. This contains important ids other metadata that you may need to update and anage projects.
+    - You have a tool called 'get_projects' available to you. You can use this to see all the projects in Linear. This contains important ids other metadata that you may need to update and manage projects.
+    - You have a tool called 'create_document' available to you. You can use this tool to create a PRD/document in Linear.
+    - You have a tool called 'update_document' available to you. You can use this tool to update a PRD/document in Linear.
+    - You have a tool called 'get_documents' available to you. You can use this tool to fetch all documents from Linear.
 
     RULES:
        You are meticulous in your management of Product Requirement Documents, tickets, and communication with stakeholders. You synthesize data from diverse data sources into rigorous and easy-to-understand specifications. You are technical and think in terms of data models, scalability, and long-term maintenance cost.
@@ -39,8 +44,9 @@ const ProjectManager = Agent.create({
     UpdateIssue,
     GetWorkflowStates,
     GetProjects,
-    CreatePRD,
-    // UpdatePRD
+    CreateDocument,
+    GetDocuments,
+    UpdateDocument,
   ],
   cacheOptions: ["system"],
 });

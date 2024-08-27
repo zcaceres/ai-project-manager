@@ -2,20 +2,31 @@ import {
   Issue,
   LinearClient,
   Project,
+  Document,
   User,
   WorkflowState,
-  ProjectFilterSuggestionPayload,
 } from "@linear/sdk";
-import type { CreateTicketInput, PRDInput, UpdateTicketInput } from "../types";
+import type {
+  CreateTicketInput,
+  DocumentInput,
+  UpdateDocumentInput,
+  UpdateTicketInput,
+} from "../types";
 
 class Linear {
   private client: LinearClient;
   private issueStatuses: WorkflowState[] = [];
   private projects: Project[] = [];
+  private documents: Document[] = [];
 
   private constructor(apiKey: string, client?: LinearClient) {
     this.client = client ?? new LinearClient({ apiKey });
+    this.hydrateContexts();
+  }
+
+  private hydrateContexts() {
     this.hydrateStatuses();
+    this.hydrateDocuments();
     this.hydrateProjects();
   }
 
@@ -56,6 +67,29 @@ class Linear {
     }
 
     this.projects = allProjects;
+  }
+
+  async hydrateDocuments(): Promise<void> {
+    let allDocuments: Document[] = [];
+    let hasNextPage = true;
+    let endCursor = null;
+
+    while (hasNextPage) {
+      const documents = await this.client.documents({
+        after: endCursor,
+        first: 100, // Fetch 100 documents at a time
+      });
+
+      allDocuments = allDocuments.concat(documents.nodes);
+      hasNextPage = documents.pageInfo.hasNextPage;
+      endCursor = documents.pageInfo.endCursor;
+    }
+
+    this.documents = allDocuments;
+  }
+
+  getDocuments(): Document[] {
+    return this.documents;
   }
 
   async hydrateStatuses(): Promise<void> {
@@ -113,6 +147,7 @@ class Linear {
       title: input.title,
       description: input.description,
       stateId: input.stateId,
+      projectId: input.projectId,
       // assigneeId: user.id,
       // dueDate: input.dueDate,
       // priority: input.priority,
@@ -133,6 +168,7 @@ class Linear {
       description: input.description,
       assigneeId: user.id,
       stateId: input.stateId,
+      projectId: input.projectId,
       // dueDate: input.dueDate,
       // priority: input.priority,
       teamId: team.id,
@@ -141,14 +177,35 @@ class Linear {
     return createdIssue;
   }
 
-  async createPRD(inputs: PRDInput) {
-    const createdDocument = await this.client.createDocument({
+  async createDocument(inputs: DocumentInput) {
+    const documentCreatedEvent = await this.client.createDocument({
       title: inputs.title,
       content: inputs.content,
       projectId: inputs.projectId,
     });
+    const documentCreated = await documentCreatedEvent.document;
 
-    return createdDocument;
+    return {
+      ...documentCreatedEvent,
+      document: documentCreated,
+    };
+  }
+
+  async updateDocument(inputs: UpdateDocumentInput) {
+    const updateDocumentEvent = await this.client.updateDocument(
+      inputs.documentId,
+      {
+        title: inputs.title,
+        content: inputs.content,
+        projectId: inputs.projectId,
+      },
+    );
+    const updatedDocument = await updateDocumentEvent.document;
+
+    return {
+      ...updateDocumentEvent,
+      document: updatedDocument,
+    };
   }
 
   static async create(

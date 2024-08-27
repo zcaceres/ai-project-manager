@@ -1,6 +1,10 @@
 import { Tool } from "easy-agent";
 import Linear from "./linear";
-import type { CreateTicketInput, PRDInput, UpdateTicketInput } from "../types";
+import type {
+  CreateTicketInput,
+  DocumentInput,
+  UpdateTicketInput,
+} from "../types";
 
 export const GetIssues: Tool = Tool.create({
   name: "get_all_issues",
@@ -25,6 +29,12 @@ export const UpdateIssue: Tool = Tool.create({
       type: "string",
       description: "The ID of the issue to update",
       required: true,
+    },
+    {
+      name: "projectId",
+      type: "string",
+      description: "The ID of the project the ticket belongs to",
+      required: false,
     },
     {
       name: "title",
@@ -79,6 +89,12 @@ export const CreateIssue: Tool = Tool.create({
       type: "string",
       description: "The title of the ticket",
       required: true,
+    },
+    {
+      name: "projectId",
+      type: "string",
+      description: "The ID of the project the ticket belongs to",
+      required: false,
     },
     {
       name: "description",
@@ -140,7 +156,6 @@ export const CreateIssue: Tool = Tool.create({
   fn: async (inputs: CreateTicketInput) => {
     try {
       const createdTicket = await Linear.createTicket(inputs);
-      console.dir(createdTicket);
       return "Successfully created ticket";
     } catch (e: any) {
       return `Error: ${e.message}`;
@@ -177,33 +192,78 @@ export const GetProjects = Tool.create({
   },
 });
 
-export const CreatePRD = Tool.create({
-  name: "create_prd",
-  description: "Creates a new PRD in Linear",
+export const CreateDocument = Tool.create({
+  name: "create_document",
+  description: "Creates a new document/PRD in Linear",
   inputs: [
     {
       name: "title",
       type: "string",
-      description: "The title of the PRD",
+      description: "The title of the document/PRD",
       required: true,
     },
     {
       name: "content",
       type: "string",
-      description: "The content of the PRD as a Markdown string",
+      description: "The content of the document/PRD as a Markdown string",
       required: true,
     },
     {
       name: "projectId",
       type: "string",
-      description: "The ID of the project the PRD belongs to",
+      description: "The ID of the project the document/PRD belongs to",
       required: true,
     },
   ],
-  fn: async (inputs: PRDInput) => {
+  fn: async (inputs: DocumentInput) => {
     try {
-      const createdPRD = await Linear.createPRD(inputs);
+      const createdPRD = await Linear.createDocument(inputs);
       return JSON.stringify(createdPRD);
+    } catch (e: any) {
+      return `Error: ${e.message}`;
+    }
+  },
+});
+
+export const UpdateDocument = Tool.create({
+  name: "update_document",
+  description: "Updates an existing PRD in Linear",
+  inputs: [
+    {
+      name: "documentId",
+      type: "string",
+      description: "The ID of the document/PRD to update",
+      required: true,
+    },
+    {
+      name: "title",
+      type: "string",
+      description: "The title of the document",
+      required: false,
+    },
+    {
+      name: "content",
+      type: "string",
+      description: "The content of the document as a Markdown string",
+      required: false,
+    },
+    {
+      name: "projectId",
+      type: "string",
+      description: "The ID of the project the document belongs to",
+      required: false,
+    },
+  ],
+});
+
+export const GetDocuments: Tool = Tool.create({
+  name: "get_documents",
+  description: "Fetches all documents/PRDs from Linear",
+  inputs: [],
+  fn: async () => {
+    try {
+      const issues = Linear.getDocuments();
+      return JSON.stringify(issues);
     } catch (e: any) {
       return `Error: ${e.message}`;
     }
