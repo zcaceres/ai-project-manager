@@ -1,0 +1,20 @@
+{
+  "name": "linear-ai",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@linear/sdk": "^27.0.0"
+  },
+  "scripts": {
+    "start": "bun run index.ts",
+    "build": "tsc",
+    "test": "bun test",
+    "test-watch": "bun test --watch"
+  }
+}
