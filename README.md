@@ -6,9 +6,15 @@ Built on top of Anthropic's Claude family of models. This agent is a CLI tool th
 
 ## Features
 
-- Create new tickets for a specified team
-- Update ticket status
-- Interact with Linear's API through a simplified interface
+- Talk to an AI PM and it will:
+  - **Create New Tickets**: The agent can create new tickets in Linear with specified titles, descriptions, and states.
+  - **Update Existing Ticket**: Changes in the ticket and to the status of the ticket.
+
+## Example Natural Language Commands
+- "That recent ticket that referred to the bug in our authentication system is fixed. Update the ticket."
+- "We're working on a new project to improve test coverage in the backend. Based on this PRD and context from the codebase, create a set of tickets that suggest areas to improve."
+- "Project X will be delayed due to unforeseen scope changes. Update the calendar associated with the project and provide an update to everyone who is subscribed to the project's notifications."
+
 
 ## Installation
 
@@ -33,9 +39,3 @@ Make sure to set up your Linear API key as an environment variable before runnin
 This project was created using `bun init` in bun v1.1.24. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
 
 Built with [easy-agent](https://github.com/zcaceres/easy-agent).
-
-## Talking to the Agent
-
-- "We're working on a new project to improve test coverage in the backend. Based on this PRD and context from the codebase, create a set of tickets that suggest areas to improve."
-- "Project X will be delayed due to unforeseen scope changes. Update the calendar associated with the project and provide an update to everyone who is subscribed to the project's notifications."
-- "That recent ticket that referred to the bug in our authentication system is fixed. Update the ticket status."

@@ -39,4 +39,13 @@ describe("Linear module", async () => {
     expect(issues).toBeDefined();
     expect(issues.length).toBeGreaterThan(0);
   });
+
+  it("gets all workflow states", async () => {
+    const workflowStates = Linear.getWorkflowStates();
+    expect(workflowStates).toBeDefined();
+    expect(workflowStates.length).toBeGreaterThan(0);
+    expect(workflowStates.find((state) => state.name === "Todo")!.name).toBe(
+      "Todo",
+    );
+  });
 });

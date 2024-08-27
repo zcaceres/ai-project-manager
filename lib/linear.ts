@@ -1,11 +1,13 @@
-import { Issue, LinearClient, User } from "@linear/sdk";
+import { Issue, LinearClient, User, WorkflowState } from "@linear/sdk";
 import type { CreateTicketInput, UpdateTicketInput } from "../types";
 
 class Linear {
   private client: LinearClient;
+  private issueStatuses: WorkflowState[] = [];
 
   private constructor(apiKey: string, client?: LinearClient) {
     this.client = client ?? new LinearClient({ apiKey });
+    this.hydrateStatuses();
   }
 
   async getCurrentUser(): Promise<User> {
@@ -18,6 +20,35 @@ class Linear {
     // @TODO: Make this not so brittle
     const firstTeam = team.nodes[0];
     return firstTeam;
+  }
+
+  getWorkflowStates() {
+    return this.issueStatuses;
+  }
+
+  async hydrateStatuses(): Promise<void> {
+    const team = await this.getTeam();
+    if (!team) {
+      throw new Error("No team found for the current user");
+    }
+
+    let allStates: WorkflowState[] = [];
+    let hasNextPage = true;
+    let endCursor = null;
+
+    while (hasNextPage) {
+      const states = await this.client.workflowStates({
+        filter: { team: { id: { eq: team.id } } },
+        after: endCursor,
+        first: 100, // Fetch 100 states at a time
+      });
+
+      allStates = allStates.concat(states.nodes);
+      hasNextPage = states.pageInfo.hasNextPage;
+      endCursor = states.pageInfo.endCursor;
+    }
+
+    this.issueStatuses = allStates;
   }
 
   async getAllIssues() {
@@ -45,10 +76,11 @@ class Linear {
     return allIssues;
   }
 
-  async updateIssue(inputs: UpdateTicketInput) {
-    const updatedIssue = await this.client.updateIssue(inputs.issueId, {
-      title: inputs.title,
-      description: inputs.description,
+  async updateIssue(input: UpdateTicketInput) {
+    const updatedIssue = await this.client.updateIssue(input.issueId, {
+      title: input.title,
+      description: input.description,
+      stateId: input.stateId,
       // assigneeId: user.id,
       // dueDate: input.dueDate,
       // priority: input.priority,
@@ -68,6 +100,7 @@ class Linear {
       title: input.title,
       description: input.description,
       assigneeId: user.id,
+      stateId: input.stateId,
       // dueDate: input.dueDate,
       // priority: input.priority,
       teamId: team.id,

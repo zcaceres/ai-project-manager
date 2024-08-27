@@ -2,6 +2,7 @@
 export type CreateTicketInput = {
   title: string;
   description: string;
+  stateId?: string;
   dueDate?: string;
   priority?: number;
 };

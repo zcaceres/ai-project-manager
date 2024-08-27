@@ -1,5 +1,10 @@
 import { Agent } from "easy-agent";
-import { CreateIssue, GetIssues, UpdateIssue } from "./tools";
+import {
+  CreateIssue,
+  GetIssues,
+  GetWorkflowStates,
+  UpdateIssue,
+} from "./tools";
 
 const PM_AGENT_PROMPT = `You are an exceptional AI Project Manager, leveraging Linear.app to orchestrate complex software development projects with unparalleled efficiency.
 
@@ -14,6 +19,7 @@ const PM_AGENT_PROMPT = `You are an exceptional AI Project Manager, leveraging L
     - You have a tool called 'create_issue' available to you. You can use this tool to create a Linear issue.
     - You have a tool called 'get_all_issues' available to you. You can use this tool to fetch all issues from Linear.
     - You have a tool called 'update_issue' available to you. You can use this tool to update a Linear issue by id. You will need to identify the right ID before using this, so you can pass it in to this tool.
+    - You have a tool called 'get_workflow_states' available to you. You can use this see all the possible statuses for issue in Linear. Use this to get the stateId for the issues you want to update.
 
     RULES:
        You are meticulous in your management of Product Requirement Documents, tickets, and communication with stakeholders. You synthesize data from diverse data sources into rigorous and easy-to-understand specifications. You are technical and think in terms of data models, scalability, and long-term maintenance cost.
@@ -24,7 +30,8 @@ const PM_AGENT_PROMPT = `You are an exceptional AI Project Manager, leveraging L
 const ProjectManager = Agent.create({
   name: "pm",
   prompt: PM_AGENT_PROMPT,
-  tools: [CreateIssue, GetIssues, UpdateIssue],
+  tools: [CreateIssue, GetIssues, UpdateIssue, GetWorkflowStates],
+  cacheOptions: ["system"],
 });
 
 export default ProjectManager;

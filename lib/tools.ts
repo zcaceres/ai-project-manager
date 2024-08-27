@@ -52,6 +52,12 @@ export const UpdateIssue: Tool = Tool.create({
         "The priority of the ticket (0-4, where 0 is no priority and 4 is urgent)",
       required: false,
     },
+    {
+      name: "stateId",
+      type: "string",
+      description: "The id of the State (status) of the ticket",
+      required: false,
+    },
   ],
   fn: async (inputs: UpdateTicketInput) => {
     try {
@@ -94,6 +100,12 @@ export const CreateIssue: Tool = Tool.create({
         "The priority of the ticket (0-4, where 0 is no priority and 4 is urgent)",
       required: false,
     },
+    {
+      name: "stateId",
+      type: "string",
+      description: "The id of the State (status) of the ticket",
+      required: false,
+    },
     // {
     //   name: "teamId",
     //   type: "string",
@@ -130,6 +142,21 @@ export const CreateIssue: Tool = Tool.create({
       const createdTicket = await Linear.createTicket(inputs);
       console.dir(createdTicket);
       return "Successfully created ticket";
+    } catch (e: any) {
+      return `Error: ${e.message}`;
+    }
+  },
+});
+
+export const GetWorkflowStates = Tool.create({
+  name: "get_workflow_states",
+  description:
+    "Fetches all 'states' from Linear which become the statuses of an issue",
+  inputs: [],
+  fn: () => {
+    try {
+      const workflowStates = Linear.getWorkflowStates();
+      return JSON.stringify(workflowStates);
     } catch (e: any) {
       return `Error: ${e.message}`;
     }
