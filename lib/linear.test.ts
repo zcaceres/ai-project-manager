@@ -48,4 +48,11 @@ describe("Linear module", async () => {
       "Todo",
     );
   });
+
+  it("gets all projects", async () => {
+    const projects = Linear.getProjects();
+    expect(projects).toBeDefined();
+    expect(projects.length).toBeGreaterThan(0);
+    expect(projects[0].name).toBe("AI Agent Test Project");
+  });
 });

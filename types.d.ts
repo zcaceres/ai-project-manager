@@ -10,3 +10,10 @@ export type CreateTicketInput = {
 export type UpdateTicketInput = {
   issueId: string;
 } & Partial<CreateTicketInput>;
+
+// Sub-type of `DocumentCreateInput`
+export type PRDInput = {
+  title: string;
+  content: string;
+  projectId: string;
+};

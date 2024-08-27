@@ -1,6 +1,6 @@
 import { Tool } from "easy-agent";
 import Linear from "./linear";
-import type { CreateTicketInput, UpdateTicketInput } from "../types";
+import type { CreateTicketInput, PRDInput, UpdateTicketInput } from "../types";
 
 export const GetIssues: Tool = Tool.create({
   name: "get_all_issues",
@@ -157,6 +157,53 @@ export const GetWorkflowStates = Tool.create({
     try {
       const workflowStates = Linear.getWorkflowStates();
       return JSON.stringify(workflowStates);
+    } catch (e: any) {
+      return `Error: ${e.message}`;
+    }
+  },
+});
+
+export const GetProjects = Tool.create({
+  name: "get_projects",
+  description: "Fetches all projects from Linear",
+  inputs: [],
+  fn: () => {
+    try {
+      const projects = Linear.getProjects();
+      return JSON.stringify(projects);
+    } catch (e: any) {
+      return `Error: ${e.message}`;
+    }
+  },
+});
+
+export const CreatePRD = Tool.create({
+  name: "create_prd",
+  description: "Creates a new PRD in Linear",
+  inputs: [
+    {
+      name: "title",
+      type: "string",
+      description: "The title of the PRD",
+      required: true,
+    },
+    {
+      name: "content",
+      type: "string",
+      description: "The content of the PRD as a Markdown string",
+      required: true,
+    },
+    {
+      name: "projectId",
+      type: "string",
+      description: "The ID of the project the PRD belongs to",
+      required: true,
+    },
+  ],
+  fn: async (inputs: PRDInput) => {
+    try {
+      const createdPRD = await Linear.createPRD(inputs);
+      return JSON.stringify(createdPRD);
     } catch (e: any) {
       return `Error: ${e.message}`;
     }

@@ -1,13 +1,22 @@
-import { Issue, LinearClient, User, WorkflowState } from "@linear/sdk";
-import type { CreateTicketInput, UpdateTicketInput } from "../types";
+import {
+  Issue,
+  LinearClient,
+  Project,
+  User,
+  WorkflowState,
+  ProjectFilterSuggestionPayload,
+} from "@linear/sdk";
+import type { CreateTicketInput, PRDInput, UpdateTicketInput } from "../types";
 
 class Linear {
   private client: LinearClient;
   private issueStatuses: WorkflowState[] = [];
+  private projects: Project[] = [];
 
   private constructor(apiKey: string, client?: LinearClient) {
     this.client = client ?? new LinearClient({ apiKey });
     this.hydrateStatuses();
+    this.hydrateProjects();
   }
 
   async getCurrentUser(): Promise<User> {
@@ -24,6 +33,29 @@ class Linear {
 
   getWorkflowStates() {
     return this.issueStatuses;
+  }
+
+  getProjects() {
+    return this.projects;
+  }
+
+  async hydrateProjects(): Promise<void> {
+    let allProjects: Project[] = [];
+    let hasNextPage = true;
+    let endCursor = null;
+
+    while (hasNextPage) {
+      const projects = await this.client.projects({
+        after: endCursor,
+        first: 100, // Fetch 100 projects at a time
+      });
+
+      allProjects = allProjects.concat(projects.nodes);
+      hasNextPage = projects.pageInfo.hasNextPage;
+      endCursor = projects.pageInfo.endCursor;
+    }
+
+    this.projects = allProjects;
   }
 
   async hydrateStatuses(): Promise<void> {
@@ -107,6 +139,16 @@ class Linear {
     });
 
     return createdIssue;
+  }
+
+  async createPRD(inputs: PRDInput) {
+    const createdDocument = await this.client.createDocument({
+      title: inputs.title,
+      content: inputs.content,
+      projectId: inputs.projectId,
+    });
+
+    return createdDocument;
   }
 
   static async create(

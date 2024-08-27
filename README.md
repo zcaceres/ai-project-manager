@@ -9,11 +9,20 @@ Built on top of Anthropic's Claude family of models. This agent is a CLI tool th
 - Talk to an AI PM and it will:
   - **Create New Tickets**: The agent can create new tickets in Linear with specified titles, descriptions, and states.
   - **Update Existing Ticket**: Changes in the ticket and to the status of the ticket.
+  - **Write PRDS**
+     - Create Product Requirement Documents (PRDs) within Linear projects.
+  - **Summarize Projects**: Summarize the current status of all active projects in the portfolio.
+  - **Summarize Timelines**: Create a high-level overview of the product development timeline based on start and due dates of projects.
 
 ## Example Natural Language Commands
-- "That recent ticket that referred to the bug in our authentication system is fixed. Update the ticket."
-- "We're working on a new project to improve test coverage in the backend. Based on this PRD and context from the codebase, create a set of tickets that suggest areas to improve."
-- "Project X will be delayed due to unforeseen scope changes. Update the calendar associated with the project and provide an update to everyone who is subscribed to the project's notifications."
+1. "Create a detailed project plan for our new mobile app."
+2. "Generate a comprehensive PRD for our upcoming e-commerce platform."
+3. "Update the status of all in-progress tasks to reflect current progress."
+4. "Draft clear and actionable tickets for each feature in our roadmap."
+5. "Review and refine the descriptions of our existing issues for clarity."
+8. "Assign appropriate statuses to newly created tasks."
+9. "Summarize the current status of all active projects in our portfolio."
+10. "Create a high-level overview of our product development timeline."
 
 
 ## Installation
