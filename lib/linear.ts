@@ -9,10 +9,12 @@ import {
 } from "@linear/sdk";
 import type {
   CreateIssueInput,
+  CreateMilestoneInput,
   CreateProjectInput,
   DocumentInput,
   UpdateDocumentInput,
   UpdateIssueInput,
+  UpdateMilestoneInput,
   UpdateProjectInput,
 } from "../types";
 
@@ -22,17 +24,20 @@ class Linear {
   private projectStatuses: ProjectStatus[] = [];
   private projects: Project[] = [];
   private documents: Document[] = [];
+  private members: User[] = [];
 
   private constructor(apiKey: string, client?: LinearClient) {
     this.client = client ?? new LinearClient({ apiKey });
-    this.hydrateContexts();
   }
 
-  private hydrateContexts() {
-    this.hydrateIssueStatuses();
-    this.hydrateProjectStatuses();
-    this.hydrateDocuments();
-    this.hydrateProjects();
+  async hydrate() {
+    return await Promise.all([
+      this.hydrateIssueStatuses(),
+      this.hydrateProjectStatuses(),
+      this.hydrateDocuments(),
+      this.hydrateProjects(),
+      this.hydrateOrganizationMembers(),
+    ]);
   }
 
   async getCurrentUser(): Promise<User> {
@@ -169,6 +174,7 @@ class Linear {
       stateId: input.stateId,
       projectId: input.projectId,
       dueDate: input.dueDate,
+      projectMilestoneId: input.projectMilestoneId,
       estimate: input.estimate,
       priority: input.priority,
       parentId: input.parentId,
@@ -189,6 +195,7 @@ class Linear {
       projectId: input.projectId,
       dueDate: input.dueDate,
       estimate: input.estimate,
+      projectMilestoneId: input.projectMilestoneId,
       priority: input.priority,
       parentId: input.parentId,
       teamId: team.id,
@@ -246,10 +253,14 @@ class Linear {
     });
 
     const projectCreated = await projectCreatedEvent.project;
+    const milestones = await projectCreated?.projectMilestones();
 
     return {
       ...projectCreatedEvent,
-      project: projectCreated,
+      project: {
+        ...projectCreated,
+        projectMilestones: milestones,
+      },
     };
   }
 
@@ -274,11 +285,67 @@ class Linear {
     );
 
     const projectUpdated = await projectUpdatedEvent.project;
+    const milestones = await projectUpdated?.projectMilestones();
 
     return {
       ...projectUpdatedEvent,
-      project: projectUpdated,
+      projectMilestones: milestones,
     };
+  }
+
+  async createMilestone(inputs: CreateMilestoneInput) {
+    const milestone = await this.client.createProjectMilestone({
+      name: inputs.name,
+      targetDate: inputs.targetDate,
+      description: inputs.description,
+      projectId: inputs.projectId,
+    });
+
+    if (!milestone.success) {
+      throw new Error("Failed to create milestone");
+    }
+
+    return milestone.projectMilestone;
+  }
+
+  async updateMilestone(inputs: UpdateMilestoneInput) {
+    const milestone = await this.client.updateProjectMilestone(
+      inputs.milestoneId,
+      {
+        name: inputs.name,
+        targetDate: inputs.targetDate,
+        description: inputs.description,
+      },
+    );
+
+    if (!milestone.success) {
+      throw new Error("Failed to create milestone");
+    }
+
+    return milestone.projectMilestone;
+  }
+
+  async hydrateOrganizationMembers(): Promise<void> {
+    let allMembers: User[] = [];
+    let hasNextPage = true;
+    let endCursor = null;
+
+    while (hasNextPage) {
+      const members = await this.client.users({
+        after: endCursor,
+        first: 100, // Fetch 100 members at a time
+      });
+
+      allMembers = allMembers.concat(members.nodes);
+      hasNextPage = members.pageInfo.hasNextPage;
+      endCursor = members.pageInfo.endCursor;
+    }
+
+    this.members = allMembers;
+  }
+
+  getOrganizationMembers(): User[] {
+    return this.members;
   }
 
   static async create(
@@ -291,7 +358,10 @@ class Linear {
       throw new Error("No Linear API key provided");
     }
 
-    return new Linear(linearApiKey, clientOverride);
+    const linear = new Linear(linearApiKey, clientOverride);
+    await linear.hydrate();
+
+    return linear;
   }
 }
 

@@ -8,8 +8,10 @@ export type CreateIssueInput = {
   dueDate?: string;
   priority?: number;
   projectId?: string;
+  projectMilestoneId?: string;
   estimate?: number;
   parentId?: string;
+  assigneeId?: string;
 };
 
 export type UpdateIssueInput = {
@@ -60,3 +62,14 @@ export type CreateProjectInput = {
 export type UpdateProjectInput = {
   projectId: string;
 } & Partial<CreateProjectInput>;
+
+export type CreateMilestoneInput = {
+  name: string;
+  projectId: string;
+  targetDate?: string;
+  description?: string;
+};
+
+export type UpdateMilestoneInput = {
+  milestoneId: string;
+} & Partial<CreateMilestoneInput>;

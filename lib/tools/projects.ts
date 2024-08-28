@@ -32,18 +32,18 @@ export const CreateProject = Tool.create({
       description: "The description of the project, character limit of 255",
       required: false,
     },
-    // {
-    //   name: "leadId",
-    //   type: "string",
-    //   description: "The ID of the project lead",
-    //   required: false,
-    // },
-    // {
-    //   name: "memberIds",
-    //   type: "array",
-    //   description: "An array of member IDs to be added to the project",
-    //   required: false,
-    // },
+    {
+      name: "leadId",
+      type: "string",
+      description: "The ID of the project lead",
+      required: false,
+    },
+    {
+      name: "memberIds",
+      type: "array",
+      description: "An array of member IDs to be added to the project",
+      required: false,
+    },
     {
       name: "priority",
       type: "number",
@@ -108,23 +108,24 @@ export const UpdateProject = Tool.create({
       description: "The new description of the project, character limit of 255",
       required: false,
     },
-    // {
-    //   name: "leadId",
-    //   type: "string",
-    //   description: "The ID of the new project lead",
-    //   required: false,
-    // },
-    // {
-    //   name: "memberIds",
-    //   type: "array",
-    //   description:
-    //     "An array of member IDs to be added to or updated in the project",
-    //   required: false,
-    // },
+    {
+      name: "leadId",
+      type: "string",
+      description: "The ID of the new project lead",
+      required: false,
+    },
+    {
+      name: "memberIds",
+      type: "array",
+      description:
+        "An array of member IDs to be added to or updated in the project",
+      required: false,
+    },
     {
       name: "priority",
       type: "number",
-      description: "The new priority of the project",
+      description:
+        "The new priority of the project (0-4, where 0 is no priority and 4 is urgent)",
       required: false,
     },
     {

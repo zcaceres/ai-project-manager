@@ -1,5 +1,7 @@
 import { beforeEach, describe, it, expect, mock } from "bun:test";
 import Linear from "../lib/linear";
+import { GetProjectStatuses } from "./tools/projects";
+import type { ProjectStatus } from "@linear/sdk";
 
 describe("Linear module", async () => {
   it("gets the current user", async () => {
@@ -18,18 +20,18 @@ describe("Linear module", async () => {
     expect(team.name).toEqual("Linear PM");
   });
 
-  it("creates a ticket", async () => {
-    const ticketInput = {
-      title: "Test Ticket",
-      description: "This is a test ticket",
+  it("creates a issue", async () => {
+    const issueInput = {
+      title: "Test Issue",
+      description: "This is a test issue",
     };
 
-    const createdTicket = await Linear.createTicket(ticketInput);
-    const issue = await createdTicket.issue;
+    const createdIssue = await Linear.createIssue(issueInput);
+    const issue = await createdIssue.issue;
 
     expect(issue).toBeDefined();
-    expect(issue!.title).toBe("Test Ticket");
-    expect(issue!.description).toBe("This is a test ticket");
+    expect(issue!.title).toBe("Test Issue");
+    expect(issue!.description).toBe("This is a test issue");
   });
 
   it("gets all issues", async () => {
@@ -39,7 +41,7 @@ describe("Linear module", async () => {
   });
 
   it("gets all workflow states", async () => {
-    const workflowStates = Linear.getWorkflowStates();
+    const workflowStates = Linear.getIssueStatuses();
     expect(workflowStates).toBeDefined();
     expect(workflowStates.length).toBeGreaterThan(0);
     expect(workflowStates.find((state) => state.name === "Todo")!.name).toBe(
@@ -76,4 +78,66 @@ describe("Linear module", async () => {
     expect(documents).toBeDefined();
     expect(documents.length).toBeGreaterThan(0);
   });
+
+  it("assigns a leadId and memberIds", async () => {
+    let issues = await Linear.getAllIssues();
+    const user = await Linear.getCurrentUser();
+
+    await Linear.updateIssue({
+      issueId: issues[0].id,
+      assigneeId: user.id,
+    });
+
+    await Linear.hydrate();
+
+    issues = await Linear.getAllIssues();
+    const updatedIssue = issues.find((issue) => issue.id === issues[0].id)!;
+    let assignee = await updatedIssue.assignee;
+    expect(assignee!.id).toBe(user.id);
+  });
+
+  // describe("GetProjectStatuses tool", () => {
+  //   it("fetches project statuses correctly", async () => {
+  //     // Mock the Linear.getProjectStatuses method
+  //     const mockProjectStatuses = [
+  //       { id: "1", name: "In Progress" },
+  //       { id: "2", name: "Completed" },
+  //     ];
+  //     const originalGetProjectStatuses = Linear.getProjectStatuses;
+  //     Linear.getProjectStatuses = mock(
+  //       () => mockProjectStatuses as ProjectStatus[],
+  //     );
+
+  //     // Call the tool's function
+  //     const result = GetProjectStatuses.fn();
+
+  //     // Parse the result (it should be a JSON string)
+  //     const parsedResult = JSON.parse(result as string);
+
+  //     // Assertions
+  //     expect(parsedResult).toEqual(mockProjectStatuses);
+  //     expect(Linear.getProjectStatuses).toHaveBeenCalledTimes(1);
+
+  //     // Restore the original method
+  //     Linear.getProjectStatuses = originalGetProjectStatuses;
+  //   });
+
+  //   it("handles errors gracefully", async () => {
+  //     // Mock the Linear.getProjectStatuses method to throw an error
+  //     const originalGetProjectStatuses = Linear.getProjectStatuses;
+  //     Linear.getProjectStatuses = mock(() => {
+  //       throw new Error("Test error");
+  //     });
+
+  //     // Call the tool's function
+  //     const result = GetProjectStatuses.fn();
+
+  //     // Assertions
+  //     expect(result).toBe("Error: Test error");
+  //     expect(Linear.getProjectStatuses).toHaveBeenCalledTimes(1);
+
+  //     // Restore the original method
+  //     Linear.getProjectStatuses = originalGetProjectStatuses;
+  //   });
+  // });
 });

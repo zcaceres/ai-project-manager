@@ -1,28 +1,26 @@
 Today's Stream
 ==============
 
-Polish, Tests, Publish to GitHub
+ZED.DEV CLOSED BETA WITH ANTHROPIC CLAUDE 3.5 FAST EDIT MODEL!
 
-- [] project statuses seem to be incorrect
+### [X] Projects! We did it!
 
+### [X] Milestones! We did it!
 
+### [] Members management
+Next: For some reason, when we update Issues and projects with the id of a user... it doesn't update in Linear. No assignee is ever assigned.
+
+- Who are the people in the org?
+- Ability to assign as lead
+- Ability to assign as member
+- Ability to assign to a ticket
+
+==============
 
 - [] Make "announcements" with summary of current project state
-- [] Update projects
-    - [] statuses update
-    - [] documents
-    - [] Add/Manage Milestones
-        - [] CRUD for Milestones
-- [] Labels of issues
-- [] Assign lead behavior
-- [] Assign members behavior
 - [] Test suite (with mocking)
      - [] use the model to fill this out
-- [] labels
+- [] support for project labels
     these come from the org
-
-Stretch Goal
-- [] Add support for multiple teams
-- [] Add support for getting multiple members
 
  Write a Project plan for a new initiative that we have to migrate our infrastructure from a Platform as a Service to AWS. Your plan should include a new project, tickets, and a detailed PRD. We have multiple worker instances running NodeJS that handle cron jobs and other such tasks. We have two server instances both host our express servers. We'll use AWS hosted services like EC2s for our infrastructure. We use a Postgres database. Your spec should include tickets for stakeholder coordination, QA, launch planning, a responsible approach to rolling our this change which would include slowly introducing traffic/load onto the system until we throttle all traffic to 100% on our new AWS infrastructure. Include estimations and priorities in the tickets as well.

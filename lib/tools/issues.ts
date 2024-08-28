@@ -17,6 +17,12 @@ const CreateMutationInputs: ToolArg[] = [
     required: false,
   },
   {
+    name: "projectMilestoneId",
+    type: "string",
+    description: "The ID of the project milestone the issue belongs to",
+    required: false,
+  },
+  {
     name: "description",
     type: "string",
     description: "A detailed description of the issue",
@@ -70,6 +76,12 @@ const UpdateMutationInputs: ToolArg[] = [
     required: false,
   },
   {
+    name: "projectMilestoneId",
+    type: "string",
+    description: "The ID of the project milestone the issue belongs to",
+    required: false,
+  },
+  {
     name: "title",
     type: "string",
     description: "The title of the issue",
@@ -112,6 +124,12 @@ const UpdateMutationInputs: ToolArg[] = [
     name: "parentId",
     type: "string",
     description: "The ID of the parent issue",
+    required: false,
+  },
+  {
+    name: "assigneeId",
+    type: "string",
+    description: "The ID of the user to assign the issue to",
     required: false,
   },
 ];
