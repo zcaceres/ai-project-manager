@@ -1,6 +1,7 @@
 {
-  "name": "linear-ai",
+  "name": "ai-project-manager",
   "module": "index.ts",
+  "description": "An AI Project Manager that manages Linear for you",
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest"
