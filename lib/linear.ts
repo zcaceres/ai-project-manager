@@ -11,11 +11,13 @@ import type {
   CreateIssueInput,
   CreateMilestoneInput,
   CreateProjectInput,
+  CreateProjectUpdateInput,
   DocumentInput,
   UpdateDocumentInput,
   UpdateIssueInput,
   UpdateMilestoneInput,
   UpdateProjectInput,
+  UpdateProjectUpdateInput,
 } from "../types";
 
 class Linear {
@@ -348,6 +350,37 @@ class Linear {
 
   getOrganizationMembers(): User[] {
     return this.members;
+  }
+
+  async createProjectUpdate(inputs: CreateProjectUpdateInput) {
+    const projectUpdateCreatedEvent =
+      await this.client.createProjectUpdate(inputs);
+
+    if (!projectUpdateCreatedEvent.success) {
+      throw new Error("Failed to create project update");
+    }
+
+    const projectUpdate = await projectUpdateCreatedEvent.projectUpdate;
+
+    return projectUpdate;
+  }
+
+  async updateProjectUpdate(inputs: UpdateProjectUpdateInput) {
+    const projectUpdateUpdateEvent = await this.client.updateProjectUpdate(
+      inputs.projectUpdateId,
+      {
+        body: inputs.body,
+        health: inputs.health,
+      },
+    );
+
+    if (!projectUpdateUpdateEvent.success) {
+      throw new Error("Failed to update project update");
+    }
+
+    const projectUpdate = await projectUpdateUpdateEvent.projectUpdate;
+
+    return projectUpdate;
   }
 
   static async create(

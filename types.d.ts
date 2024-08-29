@@ -1,3 +1,4 @@
+import type { ProjectUpdateHealthType } from "@linear/sdk/dist/_generated_documents";
 import type { ToolArg } from "../easy-agent/dist/definitions";
 
 // Sub-type of `IssueUpdateInput`
@@ -73,3 +74,13 @@ export type CreateMilestoneInput = {
 export type UpdateMilestoneInput = {
   milestoneId: string;
 } & Partial<CreateMilestoneInput>;
+
+export type CreateProjectUpdateInput = {
+  projectId: string;
+  body: string;
+  health: ProjectUpdateHealthType;
+};
+
+export type UpdateProjectUpdateInput = {
+  projectUpdateId: string;
+} & Partial<CreateProjectUpdateInput>;

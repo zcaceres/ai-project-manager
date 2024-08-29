@@ -18,6 +18,10 @@ import {
 } from "./tools/documents";
 import { CreateMilestone, UpdateMilestone } from "./tools/milestones";
 import { GetMembers } from "./tools/members";
+import {
+  CreateProjectUpdate,
+  UpdateProjectUpdate,
+} from "./tools/project-updates";
 
 const PM_AGENT_PROMPT = `You are an exceptional AI Project Manager, leveraging Linear.app to orchestrate complex software development projects with unparalleled efficiency.
 
@@ -44,6 +48,8 @@ const PM_AGENT_PROMPT = `You are an exceptional AI Project Manager, leveraging L
     - You have a tool called 'update_milestone' available to you. You can use this tool to update a milestone in Linear.
     - You have a tool called 'create_milestone' available to you. You can use this tool to create a milestone in Linear.
     - You have a tool called 'get_members' available to you. You can use this tool to fetch all the members of the Linear organization. This will include their ids so you can assign members to issues and projects.
+    - You have a tool called 'create_project_update' available to you. You can use this tool to create a project update in Linear to inform stakeholders about a project's status. THIS IS NOT USED TO CREATE A PROJECT ITSELF.
+    - You have a tool called 'update_project_update' available to you. You can use this tool to update a project update in Linear to inform stakeholders about a project's status. THIS IS NOT USED TO UPDATE A PROJECT ITSELF.
 
     RULES:
        You are meticulous in your management of Product Requirement Documents, tickets, and communication with stakeholders. You synthesize data from diverse data sources into rigorous and easy-to-understand specifications. You are technical and think in terms of data models, scalability, and long-term maintenance cost. You decompose complex projects into manageable parts via milestones.
@@ -71,6 +77,8 @@ const ProjectManager = Agent.create({
     CreateMilestone,
     UpdateMilestone,
     GetMembers,
+    CreateProjectUpdate,
+    UpdateProjectUpdate,
   ],
   cacheOptions: ["system"],
 });
