@@ -19,24 +19,24 @@ The AI PM can do the following:
 ## Installation
 
 1. Clone the repository:
-   ```
-   git clone https://github.com/zcaceres/ai-project-manager.git
-   ```
+```
+git clone https://github.com/zcaceres/ai-project-manager.git
+```
 
 2. Navigate to the project directory:
-   ```
-   cd ai-project-manager
-   ```
+```
+cd ai-project-manager
+```
 
 3. Install dependencies:
-   ```
-   bun install
-   ```
+```
+bun install
+```
 
 4. Set up your Linear API key as an environment variable:
-   ```
-   export LINEAR_API_KEY=your_api_key_here
-   ```
+```
+export LINEAR_API_KEY=your_api_key_here
+```
 
 ## Usage
 
