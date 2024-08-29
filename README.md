@@ -1,49 +1,77 @@
-# linear-ai
+# AI Project Manager
 
-An AI Agent that does project management work in Linear (linear.app).
-
-Built on top of Anthropic's Claude family of models. This agent is a CLI tool that can create new tickets, update ticket status, and interact with Linear's API through a simple conversational interface.
+AI Project Manager is an advanced tool that leverages artificial intelligence to streamline project management tasks using Linear.app. This powerful CLI application integrates seamlessly with Linear's API to automate and enhance various aspects of project management, from creating detailed PRDs to managing issues and milestones.
 
 ## Features
 
-- Talk to an AI PM and it will:
-  - **Create New Tickets**: The agent can create new tickets in Linear with specified titles, descriptions, states as part of any project.
-  - **Update Existing Ticket**: Changes in the ticket and to the status of the ticket.
-  - **Write PRDS**: Create Product Requirement Documents (PRDs) within Linear projects.
-  - **Summarize Projects**: Summarize the current status of all active projects in the portfolio.
-  - **Summarize Timelines**: Create a high-level overview of the product development timeline based on start and due dates of projects.
+Type in natural language to an AI Project Manager.
 
-## Example Natural Language Commands
-1. "Create a detailed project plan for our new mobile app."
-2. "Generate a comprehensive PRD for our upcoming e-commerce platform."
-3. "Update the status of all in-progress tasks to reflect current progress."
-4. "Draft clear and actionable tickets for each feature in our roadmap."
-5. "Review and refine the descriptions of our existing issues for clarity."
-8. "Assign appropriate statuses to newly created tasks."
-9. "Summarize the current status of all active projects in our portfolio."
-10. "Create a high-level overview of our product development timeline."
+The AI PM will understand your commands and execute them in Linear.
 
+The AI PM can do the following:
+- Create projects and write documents like PRDs
+- Set milestones and update statuses
+- Assign tasks and manage team members
+- Create and assign issues
+- Label issues
+- Generate project updates for stakeholders
 
 ## Installation
 
-To install dependencies:
+1. Clone the repository:
+   ```
+   git clone https://github.com/zcaceres/ai-project-manager.git
+   ```
 
-```bash
-bun install
-```
+2. Navigate to the project directory:
+   ```
+   cd ai-project-manager
+   ```
+
+3. Install dependencies:
+   ```
+   bun install
+   ```
+
+4. Set up your Linear API key as an environment variable:
+   ```
+   export LINEAR_API_KEY=your_api_key_here
+   ```
 
 ## Usage
 
-To run the agent:
+To start the AI Project Manager:
 
-```bash
+```
 bun run start
 ```
 
-This will start Linear Agent in CLI mode. Talk to it and it'll do work for you.
+This will launch the CLI interface where you can interact with the AI Project Manager using natural language commands.
 
-Make sure to set up your Linear API key as an environment variable before running the agent.
+### Example Commands
 
-This project was created using `bun init` in bun v1.1.24. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+- "Create a detailed project plan for our new mobile app."
+- "Generate a comprehensive PRD for our upcoming e-commerce platform."
+- "Update the status of all in-progress tasks to reflect current progress."
+- "Create a milestone for the beta release of our product."
+- "Assign John Doe as the lead for the marketing campaign project."
 
-Built with [easy-agent](https://github.com/zcaceres/easy-agent).
+## Technologies Used
+
+- [Bun](https://bun.sh) - JavaScript runtime and package manager
+- [Linear SDK](https://developers.linear.app/docs/sdk/getting-started) - For interacting with Linear.app
+- [Anthropic's Claude](https://www.anthropic.com) - AI model powering the intelligent project management capabilities
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Built live on Twitch by [Zach Caceres](https://www.twitch.tv/zachdotdev)
+- Built with [easy-agent](https://github.com/zcaceres/easy-agent)
+- Special thanks to the Linear.app team for their excellent API and documentation
