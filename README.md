@@ -46,7 +46,7 @@ To start the AI Project Manager:
 bun run start
 ```
 
-This will launch the CLI interface where you can interact with the AI Project Manager using natural language commands.
+This will launch the CLI interface where you can interact with the AI Project Manager using natural language commands. The agent will then take actions within Linear.app based on your input.
 
 ### Example Commands
 
@@ -56,28 +56,17 @@ This will launch the CLI interface where you can interact with the AI Project Ma
 - "Create a milestone for the beta release of our product."
 - "Assign John Doe as the lead for the marketing campaign project."
 
-## Technologies Used
-
-- [Bun](https://bun.sh) - JavaScript runtime and package manager
-- [Linear SDK](https://developers.linear.app/docs/sdk/getting-started) - For interacting with Linear.app
-- [Anthropic's Claude](https://www.anthropic.com) - AI model powering the intelligent project management capabilities
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Acknowledgments
 
-- Built live on Twitch by [Zach Caceres](https://www.twitch.tv/zachdotdev)
+- Built live on Twitch by [Zach C](https://www.twitch.tv/zachdotdev)
 - Built with [easy-agent](https://github.com/zcaceres/easy-agent)
 - Special thanks to the Linear.app team for their excellent API and documentation
 
-
-## Future Work
+## TODOs
 
 - Ingest evidence from other sources to inform the project workstream
   - qualitative and quantitative data
