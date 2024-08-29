@@ -321,7 +321,10 @@ class Linear {
 
     return {
       ...projectUpdatedEvent,
-      projectMilestones: milestones,
+      project: {
+        ...projectUpdated,
+        projectMilestones: milestones,
+      },
     };
   }
 
