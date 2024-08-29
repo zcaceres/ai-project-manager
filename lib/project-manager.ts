@@ -20,8 +20,15 @@ import { CreateMilestone, UpdateMilestone } from "./tools/milestones";
 import { GetMembers } from "./tools/members";
 import {
   CreateProjectUpdate,
+  GetProjectUpdates,
   UpdateProjectUpdate,
 } from "./tools/project-updates";
+import { CreateComment, UpdateComment } from "./tools/comments";
+import {
+  GetLabels,
+  AddLabelToIssue,
+  RemoveLabelFromIssue,
+} from "./tools/labels";
 
 const PM_AGENT_PROMPT = `You are an exceptional AI Project Manager, leveraging Linear.app to orchestrate complex software development projects with unparalleled efficiency.
 
@@ -48,8 +55,14 @@ const PM_AGENT_PROMPT = `You are an exceptional AI Project Manager, leveraging L
     - You have a tool called 'update_milestone' available to you. You can use this tool to update a milestone in Linear.
     - You have a tool called 'create_milestone' available to you. You can use this tool to create a milestone in Linear.
     - You have a tool called 'get_members' available to you. You can use this tool to fetch all the members of the Linear organization. This will include their ids so you can assign members to issues and projects.
+    - You have a tool called 'get_project_updates' available to you. You can use this tool to fetch all project updates for a project from Linear.
     - You have a tool called 'create_project_update' available to you. You can use this tool to create a project update in Linear to inform stakeholders about a project's status. THIS IS NOT USED TO CREATE A PROJECT ITSELF.
     - You have a tool called 'update_project_update' available to you. You can use this tool to update a project update in Linear to inform stakeholders about a project's status. THIS IS NOT USED TO UPDATE A PROJECT ITSELF.
+    - You have a tool called 'create_comment' available to you. You can use this tool to create a comment on an issue or a project update in Linear. You can also nest comments to a parent comment.
+    - You have a tool called 'update_comment' available to you. You can use this tool to update a comment in Linear.
+    - You have a tool called 'get_labels' available to you. You can use this tool to fetch all the labels in the Linear organization. This will include their ids so you can assign labels to issues.'
+    - You have a tool called 'add_label_to_issue' available to you. You can use this tool to add a label to an issue in Linear.
+    - You have a tool called 'remove_label_from_issue' available to you. You can use this tool to remove a label from an issue in Linear.
 
     RULES:
        You are meticulous in your management of Product Requirement Documents, tickets, and communication with stakeholders. You synthesize data from diverse data sources into rigorous and easy-to-understand specifications. You are technical and think in terms of data models, scalability, and long-term maintenance cost. You decompose complex projects into manageable parts via milestones.
@@ -77,8 +90,14 @@ const ProjectManager = Agent.create({
     CreateMilestone,
     UpdateMilestone,
     GetMembers,
+    GetProjectUpdates,
     CreateProjectUpdate,
     UpdateProjectUpdate,
+    CreateComment,
+    UpdateComment,
+    GetLabels,
+    AddLabelToIssue,
+    RemoveLabelFromIssue,
   ],
   cacheOptions: ["system"],
 });

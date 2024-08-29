@@ -74,3 +74,25 @@ export const UpdateProjectUpdate = Tool.create({
     }
   },
 });
+
+export const GetProjectUpdates = Tool.create({
+  name: "get_project_updates",
+  description:
+    "Retrieves all project updates for a given project ID from Linear",
+  inputs: [
+    {
+      name: "projectId",
+      type: "string",
+      description: "The ID of the project to fetch updates for",
+      required: true,
+    },
+  ],
+  fn: async (inputs: { projectId: string }) => {
+    try {
+      const projectUpdates = await Linear.getProjectUpdates(inputs.projectId);
+      return JSON.stringify(projectUpdates);
+    } catch (e: any) {
+      return `Error: ${e.message}`;
+    }
+  },
+});

@@ -84,3 +84,25 @@ export type CreateProjectUpdateInput = {
 export type UpdateProjectUpdateInput = {
   projectUpdateId: string;
 } & Partial<CreateProjectUpdateInput>;
+
+export type CreateCommentInput = {
+  body: string;
+  issueId?: string;
+  parentId?: string;
+  projectUpdateId?: string;
+};
+
+export type UpdateCommentInput = {
+  id: string;
+  body: string;
+};
+
+export type AddLabelToIssueInput = {
+  issueId: string;
+  labelId: string;
+};
+
+export type RemoveLabelFromIssueInput = {
+  issueId: string;
+  labelId: string;
+};

@@ -6,13 +6,17 @@ import {
   User,
   WorkflowState,
   ProjectStatus,
+  ProjectUpdate,
+  IssueLabel,
 } from "@linear/sdk";
 import type {
+  CreateCommentInput,
   CreateIssueInput,
   CreateMilestoneInput,
   CreateProjectInput,
   CreateProjectUpdateInput,
   DocumentInput,
+  UpdateCommentInput,
   UpdateDocumentInput,
   UpdateIssueInput,
   UpdateMilestoneInput,
@@ -27,6 +31,7 @@ class Linear {
   private projects: Project[] = [];
   private documents: Document[] = [];
   private members: User[] = [];
+  private labels: IssueLabel[] = [];
 
   private constructor(apiKey: string, client?: LinearClient) {
     this.client = client ?? new LinearClient({ apiKey });
@@ -39,6 +44,7 @@ class Linear {
       this.hydrateDocuments(),
       this.hydrateProjects(),
       this.hydrateOrganizationMembers(),
+      this.hydrateLabels(),
     ]);
   }
 
@@ -64,6 +70,28 @@ class Linear {
 
   getProjects() {
     return this.projects;
+  }
+
+  getLabels() {
+    return this.labels;
+  }
+
+  async hydrateLabels() {
+    let allLabels: IssueLabel[] = [];
+    let hasNextPage = true;
+    let endCursor = null;
+
+    while (hasNextPage) {
+      const labels = await this.client.issueLabels({
+        after: endCursor,
+        first: 100,
+      });
+      allLabels = allLabels.concat(labels.nodes);
+      hasNextPage = labels.pageInfo.hasNextPage;
+      endCursor = labels.pageInfo.endCursor;
+    }
+
+    this.labels = allLabels;
   }
 
   async hydrateProjects(): Promise<void> {
@@ -381,6 +409,84 @@ class Linear {
     const projectUpdate = await projectUpdateUpdateEvent.projectUpdate;
 
     return projectUpdate;
+  }
+
+  async getProjectUpdates(projectId: string) {
+    let allProjectUpdates: ProjectUpdate[] = [];
+    let hasNextPage = true;
+    let endCursor = null;
+
+    while (hasNextPage) {
+      const projectUpdates = await this.client.projectUpdates({
+        filter: {
+          project: { id: { eq: projectId } },
+        },
+        after: endCursor,
+        first: 100, // Fetch 100 updates at a time
+      });
+
+      allProjectUpdates = allProjectUpdates.concat(projectUpdates.nodes);
+      hasNextPage = projectUpdates.pageInfo.hasNextPage;
+      endCursor = projectUpdates.pageInfo.endCursor;
+    }
+
+    return allProjectUpdates;
+  }
+
+  async createComment(input: CreateCommentInput) {
+    const commentCreatedEvent = await this.client.createComment({
+      body: input.body,
+      issueId: input.issueId,
+      parentId: input.parentId,
+      projectUpdateId: input.projectUpdateId,
+    });
+
+    if (!commentCreatedEvent.success) {
+      throw new Error("Failed to create comment");
+    }
+
+    return commentCreatedEvent.comment;
+  }
+
+  async updateComment(input: UpdateCommentInput) {
+    const commentUpdatedEvent = await this.client.updateComment(input.id, {
+      body: input.body,
+    });
+
+    if (!commentUpdatedEvent.success) {
+      throw new Error("Failed to update comment");
+    }
+
+    return commentUpdatedEvent.comment;
+  }
+
+  async addLabelToIssue(issueId: string, labelId: string) {
+    const issue = await this.client.issue(issueId);
+    const currentLabelIds = issue.labelIds || [];
+    const updatedIssue = await this.client.updateIssue(issueId, {
+      labelIds: [...currentLabelIds, labelId],
+    });
+
+    if (!updatedIssue.success) {
+      throw new Error("Failed to add label to issue");
+    }
+
+    return updatedIssue.issue;
+  }
+
+  async removeLabelFromIssue(issueId: string, labelId: string) {
+    const issue = await this.client.issue(issueId);
+    const currentLabelIds = issue.labelIds || [];
+    const updatedLabelIds = currentLabelIds.filter((id) => id !== labelId);
+    const updatedIssue = await this.client.updateIssue(issueId, {
+      labelIds: updatedLabelIds,
+    });
+
+    if (!updatedIssue.success) {
+      throw new Error("Failed to remove label from issue");
+    }
+
+    return updatedIssue.issue;
   }
 
   static async create(

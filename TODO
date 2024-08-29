@@ -2,7 +2,6 @@ Today's Stream
 ==============
 
 ZED.DEV CLOSED BETA WITH ANTHROPIC CLAUDE 3.5 FAST EDIT MODEL!
-STARTING SOON!
 
 
 ### [X] Projects! We did it!
@@ -11,11 +10,11 @@ STARTING SOON!
 
 ### [X] Members management! We did it!
 
-### [X] Project Updates
+### [X] Project Updates! We did it!
 
-### [] Comments!
+### [X] Comments! We did it!
 
-### [] Labels!
+### [X] Labels! We did it!
 
 ### [] Steer it with voice?
 
@@ -23,10 +22,13 @@ STARTING SOON!
 
 ==============
 
-- [] Make "announcements" with summary of current project state
 - [] Test suite (with mocking)
      - [] use the model to fill this out
 
-    these come from the org
-
- Write a Project plan for a new initiative that we have to migrate our infrastructure from a Platform as a Service to AWS. Your plan should include a new project, tickets, and a detailed PRD. We have multiple worker instances running NodeJS that handle cron jobs and other such tasks. We have two server instances both host our express servers. We'll use AWS hosted services like EC2s for our infrastructure. We use a Postgres database. Your spec should include tickets for stakeholder coordination, QA, launch planning, a responsible approach to rolling our this change which would include slowly introducing traffic/load onto the system until we throttle all traffic to 100% on our new AWS infrastructure. Include estimations and priorities in the tickets as well.
+### Script for testing
+Write a Project plan for a new initiative that we have to migrate our infrastructure from a Platform as a Service to AWS. Your plan should include a new project, tickets, and a detailed PRD. We have multiple worker instances running NodeJS that handle cron jobs and other such tasks. We have two server instances both host our express servers. We'll use AWS hosted services like EC2s for our infrastructure. We use a Postgres database. Your spec should include tickets for stakeholder coordination, QA, launch planning, a responsible approach to rolling our this change which would include slowly introducing traffic/load onto the system until we throttle all traffic to 100% on our new AWS infrastructure. Include estimations and priorities in the tickets as well.
+    - Can you break it down better into Milestones?
+    - Assign me as the project lead for the Infrastructure Project
+    - Add appropriate labels to Infrastructure Project's tickets
+    - Make an project update that tells people that the project is now in the Planning phase
+    - Add comment to the project update that expresses my dissatisfaction with how long the project is going to take
