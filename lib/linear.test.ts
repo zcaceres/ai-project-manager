@@ -4,7 +4,6 @@ import type {
   Issue,
   Document,
   Comment,
-  IssuePayload,
   Project,
   Team,
   User,
@@ -91,11 +90,10 @@ describe("Linear module", async () => {
       Promise.resolve({
         issue: mockIssue as Issue,
         success: true,
-      } as unknown as IssuePayload),
+      } as unknown as Issue),
     );
 
-    const createdIssueEvent = await Linear.createIssue(issueInput);
-    const createdIssue = await createdIssueEvent.issue;
+    const createdIssue = await Linear.createIssue(issueInput);
     expect(createdIssue).toBeDefined();
     expect(createdIssue!.title).toBe("Test Issue");
     expect(createdIssue!.description).toBe("This is a test issue");
@@ -234,13 +232,13 @@ describe("Linear module", async () => {
 
   it("assigns a leadId and memberIds", async () => {
     const otherMockedUser = { id: "user-2", name: "Another User" } as User;
-    const mockIssues: Partial<Issue>[] = [
+    const mockIssues: Issue[] = [
       {
         id: "issue-1",
         title: "Test Issue",
         assignee: Promise.resolve(otherMockedUser),
       },
-    ];
+    ] as Issue[];
 
     const mockUser: Partial<User> = {
       id: "user-1",
@@ -254,15 +252,7 @@ describe("Linear module", async () => {
 
     Linear.getAllIssues = mock(() => Promise.resolve(mockIssues as Issue[]));
     Linear.getCurrentUser = mock(() => Promise.resolve(mockUser as User));
-    Linear.updateIssue = mock(() =>
-      Promise.resolve({
-        issue: {
-          ...mockIssues[0],
-          assigneeId: mockUser.id,
-        } as unknown as Issue,
-        success: true,
-      } as unknown as IssuePayload),
-    );
+    Linear.updateIssue = mock(() => Promise.resolve(mockIssues[0]));
 
     let issues = await Linear.getAllIssues();
     const user = await Linear.getCurrentUser();

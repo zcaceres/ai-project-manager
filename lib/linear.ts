@@ -198,7 +198,7 @@ class Linear {
   }
 
   async updateIssue(input: UpdateIssueInput) {
-    const updatedIssue = await this.client.updateIssue(input.issueId, {
+    const issueUpdatedEvent = await this.client.updateIssue(input.issueId, {
       title: input.title,
       description: input.description,
       stateId: input.stateId,
@@ -210,6 +210,7 @@ class Linear {
       priority: input.priority,
       parentId: input.parentId,
     });
+    const updatedIssue = await issueUpdatedEvent.issue;
     return updatedIssue;
   }
 
@@ -219,7 +220,7 @@ class Linear {
       throw new Error("No team found for the current user");
     }
 
-    const createdIssue = await this.client.createIssue({
+    const createdIssueEvent = await this.client.createIssue({
       title: input.title,
       description: input.description,
       stateId: input.stateId,
@@ -232,6 +233,8 @@ class Linear {
       parentId: input.parentId,
       teamId: team.id,
     });
+
+    const createdIssue = await createdIssueEvent.issue;
 
     return createdIssue;
   }
@@ -301,6 +304,7 @@ class Linear {
     if (!team) {
       throw new Error("No team found for the current user");
     }
+
     const projectUpdatedEvent = await this.client.updateProject(
       inputs.projectId,
       {

@@ -75,3 +75,19 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Built live on Twitch by [Zach Caceres](https://www.twitch.tv/zachdotdev)
 - Built with [easy-agent](https://github.com/zcaceres/easy-agent)
 - Special thanks to the Linear.app team for their excellent API and documentation
+
+
+## Future Work
+
+- Ingest evidence from other sources to inform the project workstream
+  - qualitative and quantitative data
+    - user interviews
+    - surveys
+    - user testing
+    - session replays
+    - metrics
+    - Fullstory
+    - Metabase
+    - Google Analytics
+    - Posthog
+- Roadmap / Epics management
