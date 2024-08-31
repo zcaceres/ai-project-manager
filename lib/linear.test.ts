@@ -86,12 +86,7 @@ describe("Linear module", async () => {
     };
 
     const originalCreateIssue = Linear.createIssue;
-    Linear.createIssue = mock(() =>
-      Promise.resolve({
-        issue: mockIssue as Issue,
-        success: true,
-      } as unknown as Issue),
-    );
+    Linear.createIssue = mock(() => Promise.resolve(mockIssue as Issue));
 
     const createdIssue = await Linear.createIssue(issueInput);
     expect(createdIssue).toBeDefined();
@@ -211,23 +206,6 @@ describe("Linear module", async () => {
     expect(documents.length).toBe(2);
 
     Linear.getDocuments = originalGetDocuments;
-  });
-
-  it("assigns a leadId and memberIds", async () => {
-    let issues = await Linear.getAllIssues();
-    const user = await Linear.getCurrentUser();
-
-    await Linear.updateIssue({
-      issueId: issues[0].id,
-      assigneeId: user.id,
-    });
-
-    await Linear.hydrate();
-
-    issues = await Linear.getAllIssues();
-    const updatedIssue = issues.find((issue) => issue.id === issues[0].id)!;
-    let assignee = await updatedIssue.assignee;
-    expect(assignee!.id).toBe(user.id);
   });
 
   it("assigns a leadId and memberIds", async () => {

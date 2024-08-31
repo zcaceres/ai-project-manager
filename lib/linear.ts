@@ -1,6 +1,5 @@
-import {
+import type {
   Issue,
-  LinearClient,
   Project,
   Document,
   User,
@@ -9,6 +8,7 @@ import {
   ProjectUpdate,
   IssueLabel,
 } from "@linear/sdk";
+import { LinearClient } from "@linear/sdk";
 import type {
   CreateCommentInput,
   CreateIssueInput,
