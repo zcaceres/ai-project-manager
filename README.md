@@ -4,9 +4,7 @@ AI Project Manager is an AI Agent that does tasks in Linear for you.
 
 ## Features
 
-Type in natural language to an AI Project Manager.
-
-The AI PM will understand your commands and execute them in Linear.
+Type in natural language. The AI PM will understand your commands and execute them in Linear.
 
 The AI PM can do the following:
 - Create projects and write documents like PRDs
@@ -46,7 +44,7 @@ To start the AI Project Manager:
 bun run start
 ```
 
-This will launch the CLI interface where you can interact with the AI Project Manager using natural language commands. The agent will then take actions within Linear.app based on your input.
+This will launch the CLI interface where you can interact with the AI Project Manager using natural language. The agent will then take actions within Linear.app based on your input.
 
 ### Example Commands
 
