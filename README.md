@@ -1,6 +1,6 @@
 # AI Project Manager
 
-AI Project Manager is an advanced tool that leverages artificial intelligence to streamline project management tasks using Linear.app. This powerful CLI application integrates seamlessly with Linear's API to automate and enhance various aspects of project management, from creating detailed PRDs to managing issues and milestones.
+AI Project Manager is an AI Agent that does tasks in Linear for you.
 
 ## Features
 
